@@ -17,5 +17,5 @@ Rails.application.routes.draw do
   # 計画（当日ページからPOST）
   resources :planned_events, only: [:create]
 
-  resources :categories, only: [:index, :new, :create]
+  resources :categories, only: [:index, :new, :create, :edit, :destroy]
 end

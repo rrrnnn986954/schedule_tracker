@@ -1,2 +1,35 @@
-<h1>Categories#index</h1>
-<p>Find me in app/views/categories/index.html.erb</p>
+<h2>カテゴリー一覧</h2>
+<p><%= link_to "新規作成", new_category_path, class: "btn-primary" %></p>
+
+<table style="width:100%;border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th style="text-align:left;padding:6px;border-bottom:1px solid #eee;">色</th>
+      <th style="text-align:left;padding:6px;border-bottom:1px solid #eee;">名前</th>
+      <th style="text-align:left;padding:6px;border-bottom:1px solid #eee;">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each do |c| %>
+      <tr>
+        <td style="padding:6px;border-bottom:1px solid #f3f4f6;">
+          <span style="display:inline-block;width:14px;height:14px;border-radius:50%;
+                       background:<%= color_hex(c) %>;"></span>
+        </td>
+        <td style="padding:6px;border-bottom:1px solid #f3f4f6;"><%= c.name %></td>
+        <td style="padding:6px;border-bottom:1px solid #f3f4f6;">
+          <% if c.default_other? %>
+            <span title="その他は編集・削除不可">（保護）</span>
+          <% else %>
+            <%= link_to "編集", edit_category_path(c) %> |
+            <%= link_to "削除", category_path(c),
+                        data: { turbo_method: :delete, turbo_confirm: "削除しますか？" } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <% if @categories.blank? %>
+      <tr><td colspan="3" style="padding:8px;">まだカテゴリーがありません</td></tr>
+    <% end %>
+  </tbody>
+</table>

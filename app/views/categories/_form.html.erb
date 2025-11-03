@@ -1,0 +1,23 @@
+<%= form_with model: @category, local: true do |f| %>
+  <% if @category.errors.any? %>
+    <ul style="color:#dc2626;">
+      <% @category.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+    </ul>
+  <% end %>
+
+  <div style="margin-bottom:10px;">
+    <%= f.label :name, "カテゴリー名" %><br>
+    <%= f.text_field :name, maxlength: 30, required: true %>
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <%= f.label :color, "色（7色）" %><br>
+    <%= f.select :color, Category.colors.keys.map { |k| [k, k] }, {}, required: true %>
+    <span style="display:inline-block;width:14px;height:14px;border-radius:50%;
+                 vertical-align:middle;margin-left:8px;
+                 background:<%= color_hex(@category.color || :blue) %>;"></span>
+  </div>
+
+  <%= f.submit class: "btn-primary", value: @category.new_record? ? "作成" : "更新" %>
+  <%= link_to "戻る", categories_path, style: "margin-left:8px;" %>
+<% end %>
