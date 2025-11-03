@@ -1,0 +1,22 @@
+<%= form_with url: planned_events_path, method: :post, local: true do |f| %>
+  <%= hidden_field_tag :date, date.strftime("%Y-%m-%d") %>
+
+  <div style="margin-bottom:8px;">
+    <label>開始</label>
+    <%= select_tag :start_at, options_for_select(time_options_10min), include_blank: true %>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <label>終了</label>
+    <%= select_tag :end_at, options_for_select(time_options_10min), include_blank: true %>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <label>カテゴリー</label>
+    <%= select_tag :category_id,
+      options_from_collection_for_select(categories, :id, :name),
+      include_blank: true %>
+  </div>
+
+  <%= f.submit "スケジュール追加" %>
+<% end %>

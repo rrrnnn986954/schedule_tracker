@@ -1,2 +1,25 @@
-<h1>Calendar#day</h1>
-<p>Find me in app/views/calendar/day.html.erb</p>
+<h2><%= @date.strftime("%Y年%-m月%-d日") %></h2>
+
+<section>
+  <h3>その日の計画</h3>
+  <ul>
+    <% @planned.each do |p| %>
+      <li>
+        <%= p.start_at.strftime("%H:%M") %> - <%= p.end_at.strftime("%H:%M") %>
+        / <%= p.category.name %>
+      </li>
+    <% end %>
+    <% if @planned.blank? %>
+      <li>まだ計画がありません</li>
+    <% end %>
+  </ul>
+</section>
+
+<hr>
+
+<section>
+  <h3>スケジュール追加</h3>
+  <%= render "planned_events/form", date: @date, categories: @categories %>
+</section>
+
+<p style="margin-top:16px;"><%= link_to "月カレンダーへ戻る", calendar_index_path(month: @date.beginning_of_month.strftime("%Y-%m-01")) %></p>
