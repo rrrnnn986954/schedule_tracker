@@ -3,17 +3,11 @@ Rails.application.routes.draw do
   root "home#index"
 
   # カレンダー（月→日）
-  get  "calendar",       to: "calendar#index", as: :calendar_index
-  get  "calendar/day",   to: "calendar#day",   as: :calendar_day  # ?date=YYYY-MM-DD
+  get "calendar",     to: "calendar#index", as: :calendar_index
+  get "calendar/day", to: "calendar#day",   as: :calendar_day  # ?date=YYYY-MM-DD
 
-  # タイムトラッカー（開始/終了/保存は今後実装）
-  resources :tracked_sessions, only: [:new, :create] do
-    collection do
-      post :start
-      post :stop
-    end
-  end
+  # 計画（当日ページからPOST）
+  resources :planned_events, only: [:create]
 
-  # カテゴリー
   resources :categories, only: [:index, :new, :create]
 end
