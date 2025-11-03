@@ -12,5 +12,28 @@
 
   <body>
     <%= yield %>
+    <header style="display:flex;gap:12px;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #eee;">
+      <div>
+        <% if user_signed_in? %>
+          ようこそ、<strong><%= current_user.email %></strong> さん
+        <% else %>
+          ようこそ、ゲストさん
+        <% end %>
+      </div>
+      <nav style="display:flex;gap:8px;">
+        <% if user_signed_in? %>
+          <%= link_to "ホーム", root_path %>
+          <!-- Turbo時代のDELETEは data: { turbo_method: :delete } を使う -->
+          <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+        <% else %>
+          <%= link_to "ログイン", new_user_session_path %>
+          <%= link_to "新規登録", new_user_registration_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <% if notice %><p style="color: green;"><%= notice %></p><% end %>
+    <% if alert %><p style="color: red;"><%= alert %></p><% end %>
+
   </body>
 </html>
