@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'planned_events/create'
   devise_for :users
   root "home#index"
 
