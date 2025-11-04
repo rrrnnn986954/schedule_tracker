@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     collection do
       post :start
       post :stop
+      post :cancel
     end
   end
 
