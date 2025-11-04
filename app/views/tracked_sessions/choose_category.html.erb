@@ -1,0 +1,17 @@
+<h3>計測終了</h3>
+<p>開始: <%= @started_at.strftime("%H:%M:%S") %> / 終了: <%= @ended_at.strftime("%H:%M:%S") %>（約 <%= @duration %> 分）</p>
+
+<%= form_with url: tracked_sessions_path, method: :post, local: true do %>
+  <%= hidden_field_tag :ended_at, @ended_at %>
+
+  <div style="margin:12px 0;">
+    <label>カテゴリー</label><br>
+    <%= select_tag :category_id,
+        options_from_collection_for_select(@categories, :id, :name, current_user.default_category&.id),
+        include_blank: false %>
+  </div>
+
+  <%= submit_tag "保存", class: "btn-primary" %>
+<% end %>
+
+<p style="margin-top:16px;"><%= link_to "計測画面に戻る", new_tracked_session_path %></p>

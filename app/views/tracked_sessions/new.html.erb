@@ -1,2 +1,39 @@
-<h1>TrackedSessions#new</h1>
-<p>Find me in app/views/tracked_sessions/new.html.erb</p>
+<h2>タイムトラッカー</h2>
+
+<% if @started_at.present? %>
+  <p>開始: <%= @started_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+
+  <!-- 経過タイマー（簡易） -->
+  <p>経過: <span id="elapsed">--:--:--</span></p>
+
+  <div style="display:flex;gap:8px;margin-top:12px;">
+    <%= button_to "終了", stop_tracked_sessions_path,
+      method: :post,
+      class: "btn-primary",
+      data: { turbo: false } %>
+
+    <%= button_to "キャンセル", cancel_tracked_sessions_path,
+          method: :post,
+          data: { turbo_confirm: "計測を取り消しますか？" } %>
+  </div>
+
+  <script type="module">
+    const startedAt = new Date("<%= @started_at.iso8601 %>");
+    const span = document.getElementById("elapsed");
+    function pad(n){ return String(n).padStart(2,"0") }
+    function tick(){
+      const now = new Date();
+      let s = Math.max(0, Math.floor((now - startedAt) / 1000));
+      const h = Math.floor(s / 3600); s -= h*3600;
+      const m = Math.floor(s / 60);   s -= m*60;
+      span.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    }
+    tick(); setInterval(tick, 1000);
+  </script>
+
+<% else %>
+  <p>まだ計測は始まっていません。</p>
+  <%= button_to "開始", start_tracked_sessions_path, method: :post, class: "btn-primary" %>
+<% end %>
+
+<p style="margin-top:16px;"><%= link_to "ホームへ", home_path %></p>
