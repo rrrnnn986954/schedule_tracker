@@ -18,6 +18,25 @@
 <hr>
 
 <section>
+  <h3>実績（Tracked）</h3>
+  <ul>
+    <% if @tracked.present? %>
+      <% @tracked.each do |t| %>
+        <li>
+          <%= t.started_at.strftime("%H:%M") %> - <%= t.ended_at.strftime("%H:%M") %>
+          / <%= t.category.name %>
+        </li>
+      <% end %>
+    <% else %>
+      <li>当日の実績はありません</li>
+    <% end %>
+  </ul>
+</section>
+
+
+<hr>
+
+<section>
   <h3>スケジュール追加</h3>
   <%= render "planned_events/form", date: @date, categories: @categories %>
 </section>
