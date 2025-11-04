@@ -7,7 +7,11 @@
   <p>経過: <span id="elapsed">--:--:--</span></p>
 
   <div style="display:flex;gap:8px;margin-top:12px;">
-    <%= button_to "終了", stop_tracked_sessions_path, method: :post, class: "btn-primary" %>
+    <%= button_to "終了", stop_tracked_sessions_path,
+      method: :post,
+      class: "btn-primary",
+      data: { turbo: false } %>
+
     <%= button_to "キャンセル", cancel_tracked_sessions_path,
           method: :post,
           data: { turbo_confirm: "計測を取り消しますか？" } %>

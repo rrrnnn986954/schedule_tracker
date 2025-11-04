@@ -57,7 +57,7 @@ class TrackedSessionsController < ApplicationController
     )
 
     if ts.save
-      redirect_to home_path, notice: "実績を保存しました（#{category.name} / 約#{ts.duration_minutes}分）"
+      redirect_to new_tracked_session_path, notice: "実績を保存しました（#{category.name} / 約#{ts.duration_minutes}分）"
     else
       # バリデーションNG時は計測をやり直せるよう new に戻す
       redirect_to new_tracked_session_path, alert: ts.errors.full_messages.to_sentence
