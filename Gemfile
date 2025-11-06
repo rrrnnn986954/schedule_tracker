@@ -70,3 +70,7 @@ end
 gem "devise", "~> 4.9"
 
 gem "rspec-rails", "~> 7.1"
+
+group :production do
+  gem 'pg'
+end
