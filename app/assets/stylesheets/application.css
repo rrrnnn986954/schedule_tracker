@@ -87,3 +87,102 @@
 }
 .timeline-head div:nth-child(2),
 .timeline-head div:nth-child(3) { text-align: center; }
+
+
+
+/* ========== ベーススタイル ========== */
+
+/* コンテナ全体 */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+  color: #111;
+}
+
+/* ヘッダー */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+}
+
+/* メインボタン（ホームの3つ） */
+.home-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.home-buttons a {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  border-radius: 10px;
+  background: #e0e7ff;
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.home-buttons a:hover {
+  background: #c7d2fe;
+}
+
+/* ====== スマホ用調整（幅600px以下） ====== */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 14px;
+  }
+
+  h1, h2, h3 {
+    font-size: 1.1em;
+  }
+
+  /* ボタンを縦に並べる */
+  .home-buttons {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .home-buttons a {
+    font-size: 16px;
+    padding: 14px;
+  }
+
+  /* タイムライン系（縦スクロールで見やすく） */
+  .timeline-vertical {
+    grid-template-columns: 48px 1fr 1fr; /* 時間ラベルを少し狭く */
+    gap: 4px;
+  }
+
+  .timeline-col {
+    height: calc(var(--minute-h) * 720); /* 半分サイズで省スペース */
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* グラフ2つを縦並びに */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+button, a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
