@@ -74,15 +74,15 @@
 
 
 <hr>
-<h3>計画 vs 実績（円グラフ）</h3>
+<h3>計画 vs 実績（1日＝24時間の円グラフ）</h3>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
   <div>
-    <h4>計画</h4>
+    <h4>計画（24時間基準）</h4>
     <canvas id="piePlanned" height="180"></canvas>
   </div>
   <div>
-    <h4>実績</h4>
+    <h4>実績（24時間基準）</h4>
     <canvas id="pieTracked" height="180"></canvas>
   </div>
 </div>
@@ -90,62 +90,64 @@
 <script type="module">
   import Chart from "chart.js/auto"
 
-  // Ruby側からデータを注入
+  // ---- Rubyからデータ ----
   const plannedLabels = <%= raw @planned_chart.keys.to_json %>;
   const plannedData   = <%= raw @planned_chart.values.to_json %>;
   const trackedLabels = <%= raw @tracked_chart.keys.to_json %>;
   const trackedData   = <%= raw @tracked_chart.values.to_json %>;
 
-  // カテゴリー名→HEX色のマッピング
-  const CATEGORY_COLORS = <%= raw current_user.categories
-                                  .map { |c| [c.name, color_hex(c)] }
-                                  .to_h.to_json %>;
+  const CATEGORY_COLORS = <%= raw current_user.categories.map { |c| [c.name, color_hex(c)] }.to_h.to_json %>;
 
-  const toColors = (labels) => labels.map(name => CATEGORY_COLORS[name] || "#9ca3af");
+  // ---- 24時間=1440分基準に変換 ----
+  const TOTAL_MINUTES = 1440;
 
-  // 計画グラフ
-  const elPlanned = document.getElementById("piePlanned");
-  if (plannedLabels.length > 0) {
-    new Chart(elPlanned, {
-      type: "pie",
+  function normalizeToDay(labels, data) {
+    const total = data.reduce((a,b)=>a+b,0);
+    const remain = Math.max(0, TOTAL_MINUTES - total);
+    const newLabels = [...labels];
+    const newData   = [...data];
+    const newColors = labels.map(name => CATEGORY_COLORS[name] || "#9ca3af");
+    if (remain > 0) {
+      newLabels.push("未使用時間");
+      newData.push(remain);
+      newColors.push("#e5e7eb"); // 薄いグレー
+    }
+    return { labels: newLabels, data: newData, colors: newColors };
+  }
+
+  // ---- グラフ作成関数 ----
+  function drawPie(canvasId, labels, data, title) {
+    const ctx = document.getElementById(canvasId);
+    const norm = normalizeToDay(labels, data);
+    new Chart(ctx, {
+      type: "doughnut",
       data: {
-        labels: plannedLabels,
+        labels: norm.labels,
         datasets: [{
-          data: plannedData,
-          backgroundColor: toColors(plannedLabels)
+          data: norm.data,
+          backgroundColor: norm.colors
         }]
       },
       options: {
         plugins: {
           legend: { position: "bottom" },
-          title: { display: false }
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const val = ctx.raw;
+                const pct = (val / TOTAL_MINUTES * 100).toFixed(1);
+                const hours = Math.floor(val / 60);
+                const mins  = val % 60;
+                return `${ctx.label}: ${hours}時間${mins}分 (${pct}%)`;
+              }
+            }
+          }
         }
       }
     });
-  } else {
-    elPlanned.insertAdjacentHTML("afterend", "<p>計画のデータがありません</p>");
   }
 
-  // 実績グラフ
-  const elTracked = document.getElementById("pieTracked");
-  if (trackedLabels.length > 0) {
-    new Chart(elTracked, {
-      type: "pie",
-      data: {
-        labels: trackedLabels,
-        datasets: [{
-          data: trackedData,
-          backgroundColor: toColors(trackedLabels)
-        }]
-      },
-      options: {
-        plugins: {
-          legend: { position: "bottom" },
-          title: { display: false }
-        }
-      }
-    });
-  } else {
-    elTracked.insertAdjacentHTML("afterend", "<p>実績のデータがありません</p>");
-  }
+  if (plannedLabels.length > 0) drawPie("piePlanned", plannedLabels, plannedData, "計画");
+  if (trackedLabels.length > 0) drawPie("pieTracked", trackedLabels, trackedData, "実績");
 </script>
+
