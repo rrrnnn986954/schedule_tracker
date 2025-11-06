@@ -141,12 +141,12 @@ graph TD
 ---
 
 ## ローカルでの動作方法
-$ git clone https://github.com/yourname/schedule_tracker.git
-$ cd schedule_tracker
-$ bundle install
-$ rails db:create
-$ rails db:migrate
-$ rails s
+- $ git clone https://github.com/yourname/schedule_tracker.git
+- $ cd schedule_tracker
+- $ bundle install
+- $ rails db:create
+- $ rails db:migrate
+- $ rails s
 
 ---
 
