@@ -208,7 +208,7 @@ header {
 
 
 /* ===============================
-   スマホ対応
+   スマホ対応（修正版）
    =============================== */
 @media (max-width: 600px) {
   header {
@@ -228,6 +228,7 @@ header {
 
   .btn-home {
     font-size: 16px;
+    padding: 14px;
   }
 
   .timeline-vertical {
@@ -235,8 +236,10 @@ header {
     gap: 4px;
   }
 
-  .timeline-col {
-    height: calc(var(--minute-h) * 720);
+  /* ▼ 24時間分の高さを確保（ここを修正） */
+  .timeline-col,
+  .timeline-hours {
+    height: calc(var(--minute-h) * 1440);
   }
 
   canvas {
@@ -258,3 +261,11 @@ button, a {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* （任意）タイムラインを枠内スクロールにしたい場合は使用
+.timeline-scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+*/
