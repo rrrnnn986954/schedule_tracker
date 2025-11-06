@@ -8,14 +8,11 @@ class User < ApplicationRecord
 
   after_create :ensure_default_category!
 
-  validates :nickname, length: { maximum: 30 }, allow_blank: true
+  # 要件に合わせて必須化（※既存データが空なら一度だけ埋めるか、暫定で presence を外す）
+  validates :nickname, presence: true, length: { maximum: 30 }
 
-  
   def ensure_default_category!
-    categories.find_or_create_by!(name: "その他") do |c|
-      # 既存 enum: red/orange/yellow/green/blue/indigo/purple のいずれか
-      c.color = :purple
-    end
+    categories.find_or_create_by!(name: "その他") { |c| c.color = :purple }
   end
 
   def default_category

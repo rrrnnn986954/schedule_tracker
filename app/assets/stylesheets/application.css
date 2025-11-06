@@ -1,24 +1,144 @@
-/* application.css */
-.btn-primary {
+/* ===============================
+   共通ボタンスタイル（全ページ共通）
+   =============================== */
+.btn-primary,
+button.btn-primary,
+a.btn-primary,
+input[type="submit"].btn-primary {
   display: inline-block;
   padding: 10px 16px;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
+  background-color: #e0e7ff;   /* 統一背景色 */
+  color: #1e3a8a;              /* 統一文字色 */
+  font-weight: 600;
+  font-size: 14px;
   text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color .2s, transform .1s;
+}
+
+/* buttonはブラウザ標準をリセット */
+button.btn-primary {
+  all: unset;
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color .2s, transform .1s;
+}
+
+/* ホバー・フォーカス統一 */
+.btn-primary:hover,
+button.btn-primary:hover,
+a.btn-primary:hover,
+input[type="submit"].btn-primary:hover {
+  background-color: #c7d2fe;
+  transform: translateY(-1px);
+}
+
+.btn-primary:focus,
+button.btn-primary:focus,
+a.btn-primary:focus,
+input[type="submit"].btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(147,197,253,.45);
+}
+
+/* button_to用：formを横並びに */
+.inline-form {
+  display: inline;
+}
+
+
+/* ===============================
+   ホーム画面：3つのボタンをカードで縦並び
+   =============================== */
+.home-buttons-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  margin-top: 24px;
+}
+
+/* 各ボタンを囲むカード枠 */
+.home-card {
+  width: 80%;
+  max-width: 360px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* ボタン本体 */
+.btn-home {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  border-radius: 10px;
+  background: #e0e7ff;
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-home:hover {
+  background: #c7d2fe;
+  transform: translateY(-2px);
+}
+
+
+/* ===============================
+   ヘッダー・ベースデザイン
+   =============================== */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+  color: #111;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #3b82f6;
+  color: white;
   font-weight: 600;
 }
-.btn-primary:hover { background: #f3f4f6; }
 
-/* ==== 縦タイムライン共通 ==== */
+
+/* ===============================
+   タイムラインビュー（既存）
+   =============================== */
 .timeline-vertical {
-  /* 左:時間ラベル / 中:計画 / 右:実績 */
   display: grid;
   grid-template-columns: 64px 1fr 1fr;
   gap: 8px;
   align-items: start;
 }
 
-/* 1日分の高さ：--minute-h(=1分あたりpx) × 1440分 */
 .timeline-col {
   position: relative;
   height: calc(var(--minute-h) * 1440);
@@ -26,7 +146,6 @@
   border-radius: 10px;
   overflow: hidden;
   background:
-    /* 1時間ごとの太い線 */
     repeating-linear-gradient(
       to bottom,
       rgba(0,0,0,0.06) 0,
@@ -34,7 +153,6 @@
       transparent 1px,
       transparent calc(var(--minute-h) * 60)
     ),
-    /* 30分の補助線（薄め） */
     repeating-linear-gradient(
       to bottom,
       transparent 0,
@@ -45,23 +163,22 @@
   background-color: #fff;
 }
 
-/* 時間ラベル列 */
 .timeline-hours {
   position: relative;
   height: calc(var(--minute-h) * 1440);
   font-size: 12px;
   color: #6b7280;
 }
+
 .timeline-hour-mark {
   position: absolute;
-  right: 6px;          /* 数字の寄せ */
+  right: 6px;
   transform: translateY(-50%);
 }
 
-/* イベント帯（計画/実績） */
 .event-block {
   position: absolute;
-  left: 6px;              /* 左右の余白 */
+  left: 6px;
   right: 6px;
   border-radius: 8px;
   color: #fff;
@@ -77,7 +194,6 @@
   white-space: nowrap;
 }
 
-/* 見出し */
 .timeline-head {
   display: grid;
   grid-template-columns: 64px 1fr 1fr;
@@ -86,56 +202,14 @@
   font-weight: 700;
 }
 .timeline-head div:nth-child(2),
-.timeline-head div:nth-child(3) { text-align: center; }
-
-
-
-/* ========== ベーススタイル ========== */
-
-/* コンテナ全体 */
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-  background-color: #fafafa;
-  color: #111;
-}
-
-/* ヘッダー */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #3b82f6;
-  color: white;
-  font-weight: 600;
-}
-
-/* メインボタン（ホームの3つ） */
-.home-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 16px;
-  padding: 16px;
-}
-
-.home-buttons a {
-  display: block;
+.timeline-head div:nth-child(3) {
   text-align: center;
-  padding: 16px;
-  border-radius: 10px;
-  background: #e0e7ff;
-  color: #1e3a8a;
-  text-decoration: none;
-  font-weight: 500;
-  transition: 0.2s;
 }
 
-.home-buttons a:hover {
-  background: #c7d2fe;
-}
 
-/* ====== スマホ用調整（幅600px以下） ====== */
+/* ===============================
+   スマホ対応
+   =============================== */
 @media (max-width: 600px) {
   header {
     flex-direction: column;
@@ -147,25 +221,22 @@ header {
     font-size: 1.1em;
   }
 
-  /* ボタンを縦に並べる */
-  .home-buttons {
-    grid-template-columns: 1fr;
-    padding: 12px;
+  .home-card {
+    width: 90%;
+    padding: 16px;
   }
 
-  .home-buttons a {
+  .btn-home {
     font-size: 16px;
-    padding: 14px;
   }
 
-  /* タイムライン系（縦スクロールで見やすく） */
   .timeline-vertical {
-    grid-template-columns: 48px 1fr 1fr; /* 時間ラベルを少し狭く */
+    grid-template-columns: 48px 1fr 1fr;
     gap: 4px;
   }
 
   .timeline-col {
-    height: calc(var(--minute-h) * 720); /* 半分サイズで省スペース */
+    height: calc(var(--minute-h) * 720);
   }
 
   canvas {
@@ -173,7 +244,6 @@ header {
     height: auto !important;
   }
 
-  /* グラフ2つを縦並びに */
   .charts-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -181,34 +251,10 @@ header {
   }
 }
 
+/* ===============================
+   タップ操作をスムーズに
+   =============================== */
 button, a {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* ===== ホーム画面：縦並びボタン ===== */
-.home-buttons-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: stretch;
-}
-
-.btn-home {
-  display: block;
-  text-align: center;
-  padding: 16px;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #e0e7ff, #f1f5f9);
-  color: #1e3a8a;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 18px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  transition: all 0.2s ease;
-}
-
-.btn-home:hover {
-  background: #c7d2fe;
-  transform: translateY(-2px);
 }
