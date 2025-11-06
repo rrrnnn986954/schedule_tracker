@@ -70,3 +70,82 @@
     </div>
   </div>
 </div>
+
+
+
+<hr>
+<h3>計画 vs 実績（円グラフ）</h3>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
+  <div>
+    <h4>計画</h4>
+    <canvas id="piePlanned" height="180"></canvas>
+  </div>
+  <div>
+    <h4>実績</h4>
+    <canvas id="pieTracked" height="180"></canvas>
+  </div>
+</div>
+
+<script type="module">
+  import Chart from "chart.js/auto"
+
+  // Ruby側からデータを注入
+  const plannedLabels = <%= raw @planned_chart.keys.to_json %>;
+  const plannedData   = <%= raw @planned_chart.values.to_json %>;
+  const trackedLabels = <%= raw @tracked_chart.keys.to_json %>;
+  const trackedData   = <%= raw @tracked_chart.values.to_json %>;
+
+  // カテゴリー名→HEX色のマッピング
+  const CATEGORY_COLORS = <%= raw current_user.categories
+                                  .map { |c| [c.name, color_hex(c)] }
+                                  .to_h.to_json %>;
+
+  const toColors = (labels) => labels.map(name => CATEGORY_COLORS[name] || "#9ca3af");
+
+  // 計画グラフ
+  const elPlanned = document.getElementById("piePlanned");
+  if (plannedLabels.length > 0) {
+    new Chart(elPlanned, {
+      type: "pie",
+      data: {
+        labels: plannedLabels,
+        datasets: [{
+          data: plannedData,
+          backgroundColor: toColors(plannedLabels)
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: false }
+        }
+      }
+    });
+  } else {
+    elPlanned.insertAdjacentHTML("afterend", "<p>計画のデータがありません</p>");
+  }
+
+  // 実績グラフ
+  const elTracked = document.getElementById("pieTracked");
+  if (trackedLabels.length > 0) {
+    new Chart(elTracked, {
+      type: "pie",
+      data: {
+        labels: trackedLabels,
+        datasets: [{
+          data: trackedData,
+          backgroundColor: toColors(trackedLabels)
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: "bottom" },
+          title: { display: false }
+        }
+      }
+    });
+  } else {
+    elTracked.insertAdjacentHTML("afterend", "<p>実績のデータがありません</p>");
+  }
+</script>
