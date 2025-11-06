@@ -9,6 +9,11 @@
     <%= link_to "← 戻る", calendar_index_path(month: @date.beginning_of_month), class: "btn-primary", style: "margin-top:8px; display:inline-block;" %>
   </header>
 
+  <h2>スケジュール追加</h2>
+    <%= render "planned_events/form", date: @date, categories: @categories %>
+    <hr style="margin: 20px 0;">
+  <h2>1日の予定と実績</h2>
+<!-- ↓ ここからタイムラインやグラフを表示する部分 -->
   <!-- タイムライン見出し -->
   <div class="timeline-head">
     <div></div>
