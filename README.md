@@ -108,10 +108,12 @@ erDiagram
     bigint user_id
     bigint category_id
   }
+```
 
 ---
 
 ## 🗄 画面遷移図  
+```mermaid
 graph TD
   A[ホーム] --> B[カレンダー]
   A --> C[タイムトラッカー]
