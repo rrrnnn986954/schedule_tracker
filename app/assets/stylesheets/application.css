@@ -186,3 +186,29 @@ button, a {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ===== ホーム画面：縦並びボタン ===== */
+.home-buttons-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.btn-home {
+  display: block;
+  text-align: center;
+  padding: 16px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #e0e7ff, #f1f5f9);
+  color: #1e3a8a;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+}
+
+.btn-home:hover {
+  background: #c7d2fe;
+  transform: translateY(-2px);
+}
