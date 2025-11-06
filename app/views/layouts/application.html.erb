@@ -15,7 +15,7 @@
     <header style="display:flex;gap:12px;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #eee;">
       <div>
         <% if user_signed_in? %>
-          ようこそ、<strong><%= current_user.email %></strong> さん
+          ようこそ、<strong><%= current_user.nickname %></strong> さん
         <% else %>
           ようこそ、ゲストさん
         <% end %>

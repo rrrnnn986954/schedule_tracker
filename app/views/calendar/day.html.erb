@@ -1,26 +1,23 @@
-<h2><%= @date.strftime("%Y年%-m月%-d日") %></h2>
+<!-- app/views/calendar/day.html.erb -->
+<main style="--minute-h: 1.1px; padding: 12px;">
 
-<section>
-  <h3>スケジュール追加</h3>
-  <%= render "planned_events/form", date: @date, categories: @categories %>
-</section>
+  <!-- 日付タイトル -->
+  <header style="text-align:center; margin-bottom:16px;">
+    <h2 style="font-size:1.3em; font-weight:700;">
+      <%= @date.strftime("%Y年%-m月%-d日") %>
+    </h2>
+    <%= link_to "← 戻る", calendar_index_path(month: @date.beginning_of_month), class: "btn-primary", style: "margin-top:8px; display:inline-block;" %>
+  </header>
 
-<p style="margin-top:16px;"><%= link_to "月カレンダーへ戻る", calendar_index_path(month: @date.beginning_of_month.strftime("%Y-%m-01")) %></p>
-
-
-
-<hr>
-<h3><%= @date.strftime("%Y年%-m月%-d日") %></h3>
-
-<!-- 高さスケール：--minute-h を好みで（1.0〜1.4px あたり） -->
-<div style="--minute-h: 1.1px;">
+  <!-- タイムライン見出し -->
   <div class="timeline-head">
     <div></div>
     <div>計画</div>
     <div>実績</div>
   </div>
 
-  <div class="timeline-vertical">
+  <!-- タイムライン -->
+  <div class="timeline-vertical" style="margin-bottom:32px;">
     <% base = @date.beginning_of_day %>
     <% total_minutes = 24 * 60 %>
 
@@ -28,8 +25,7 @@
     <div class="timeline-hours">
       <% (0..24).each do |h| %>
         <% top_min = h * 60 %>
-        <div class="timeline-hour-mark"
-             style="top: calc(var(--minute-h) * <%= top_min %>);">
+        <div class="timeline-hour-mark" style="top: calc(var(--minute-h) * <%= top_min %>);">
           <%= "%02d:00" % h %>
         </div>
       <% end %>
@@ -39,7 +35,7 @@
     <div class="timeline-col">
       <% @timeline_planned.each do |b| %>
         <% start_min = [((b[:start] - base) / 60).floor, 0].max %>
-        <% end_min   = [((b[:end]   - base) / 60).ceil,  total_minutes].min %>
+        <% end_min   = [((b[:end]   - base) / 60).ceil, total_minutes].min %>
         <% dur_min   = [end_min - start_min, 0].max %>
         <% hex = color_hex(b[:category]) %>
         <div class="event-block"
@@ -56,7 +52,7 @@
     <div class="timeline-col">
       <% @timeline_tracked.each do |b| %>
         <% start_min = [((b[:start] - base) / 60).floor, 0].max %>
-        <% end_min   = [((b[:end]   - base) / 60).ceil,  total_minutes].min %>
+        <% end_min   = [((b[:end]   - base) / 60).ceil, total_minutes].min %>
         <% dur_min   = [end_min - start_min, 0].max %>
         <% hex = color_hex(b[:category]) %>
         <div class="event-block"
@@ -69,38 +65,36 @@
       <% end %>
     </div>
   </div>
-</div>
 
+  <!-- 円グラフ（24時間基準） -->
+  <section>
+    <h3 style="margin-bottom:8px; text-align:center;">計画 vs 実績（24時間基準）</h3>
 
+    <div class="charts-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start;">
+      <div>
+        <h4 style="text-align:center;">計画</h4>
+        <canvas id="piePlanned" height="180"></canvas>
+      </div>
+      <div>
+        <h4 style="text-align:center;">実績</h4>
+        <canvas id="pieTracked" height="180"></canvas>
+      </div>
+    </div>
+  </section>
 
-<hr>
-<h3>計画 vs 実績（1日＝24時間の円グラフ）</h3>
+</main>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
-  <div>
-    <h4>計画（24時間基準）</h4>
-    <canvas id="piePlanned" height="180"></canvas>
-  </div>
-  <div>
-    <h4>実績（24時間基準）</h4>
-    <canvas id="pieTracked" height="180"></canvas>
-  </div>
-</div>
-
+<!-- Chart.js スクリプト -->
 <script type="module">
   import Chart from "chart.js/auto"
 
-  // ---- Rubyからデータ ----
   const plannedLabels = <%= raw @planned_chart.keys.to_json %>;
   const plannedData   = <%= raw @planned_chart.values.to_json %>;
   const trackedLabels = <%= raw @tracked_chart.keys.to_json %>;
   const trackedData   = <%= raw @tracked_chart.values.to_json %>;
-
   const CATEGORY_COLORS = <%= raw current_user.categories.map { |c| [c.name, color_hex(c)] }.to_h.to_json %>;
 
-  // ---- 24時間=1440分基準に変換 ----
   const TOTAL_MINUTES = 1440;
-
   function normalizeToDay(labels, data) {
     const total = data.reduce((a,b)=>a+b,0);
     const remain = Math.max(0, TOTAL_MINUTES - total);
@@ -110,13 +104,12 @@
     if (remain > 0) {
       newLabels.push("未使用時間");
       newData.push(remain);
-      newColors.push("#e5e7eb"); // 薄いグレー
+      newColors.push("#e5e7eb");
     }
     return { labels: newLabels, data: newData, colors: newColors };
   }
 
-  // ---- グラフ作成関数 ----
-  function drawPie(canvasId, labels, data, title) {
+  function drawPie(canvasId, labels, data) {
     const ctx = document.getElementById(canvasId);
     const norm = normalizeToDay(labels, data);
     new Chart(ctx, {
@@ -136,9 +129,9 @@
               label: (ctx) => {
                 const val = ctx.raw;
                 const pct = (val / TOTAL_MINUTES * 100).toFixed(1);
-                const hours = Math.floor(val / 60);
-                const mins  = val % 60;
-                return `${ctx.label}: ${hours}時間${mins}分 (${pct}%)`;
+                const h = Math.floor(val / 60);
+                const m = val % 60;
+                return `${ctx.label}: ${h}時間${m}分 (${pct}%)`;
               }
             }
           }
@@ -147,7 +140,6 @@
     });
   }
 
-  if (plannedLabels.length > 0) drawPie("piePlanned", plannedLabels, plannedData, "計画");
-  if (trackedLabels.length > 0) drawPie("pieTracked", trackedLabels, trackedData, "実績");
+  if (plannedLabels.length > 0) drawPie("piePlanned", plannedLabels, plannedData);
+  if (trackedLabels.length > 0) drawPie("pieTracked", trackedLabels, trackedData);
 </script>
-

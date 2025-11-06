@@ -1,10 +1,11 @@
+<!-- app/views/home/index.html.erb -->
+<main style="padding: 24px; max-width: 420px; margin: 0 auto;">
 
-<main style="padding:24px;">
-  <h1 style="margin-bottom:16px;">ホーム</h1>
-
-  <div style="display:flex; gap:12px; flex-wrap:wrap;">
-    <%= link_to "カレンダー", calendar_index_path, class: "btn-primary" %>
-    <%= link_to "計測", new_tracked_session_path, class: "btn-primary" %>
-    <%= link_to "カテゴリー作成", categories_path, class: "btn-primary" %>
+  <!-- 縦並びボタン -->
+  <div class="home-buttons-vertical">
+    <%= link_to "📅 カレンダー", calendar_index_path, class: "btn-home" %>
+    <%= link_to "⏱ 計測", new_tracked_session_path, class: "btn-home" %>
+    <%= link_to "🎨 カテゴリー作成", categories_path, class: "btn-home" %>
   </div>
+
 </main>
