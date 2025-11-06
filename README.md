@@ -108,7 +108,6 @@ erDiagram
     bigint user_id
     bigint category_id
   }
-```
 
 ---
 
@@ -125,6 +124,8 @@ graph TD
   C --> H[計測終了→ホーム]
 
   D --> I[カテゴリー保存]
+
+```
 
 ---
 
