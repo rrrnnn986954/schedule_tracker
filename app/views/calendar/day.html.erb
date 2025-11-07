@@ -13,7 +13,25 @@
     <%= render "planned_events/form", date: @date, categories: @categories %>
     <hr style="margin: 20px 0;">
   <h2>1日の予定と実績</h2>
-<!-- ↓ ここからタイムラインやグラフを表示する部分 -->
+
+  <% if @planned.present? %>
+    <ul style="padding-left: 1rem;">
+      <% @planned.each do |ev| %>
+        <li style="margin:6px 0;">
+          <%= ev.start_at.strftime("%H:%M") %> - <%= ev.end_at.strftime("%H:%M") %>
+          <%= ev.category.name %>
+          <%= link_to "編集", edit_planned_event_path(ev), class: "btn-primary", style: "margin-left:8px;padding:4px 8px;font-size:12px;" %>
+          <%= link_to "削除", planned_event_path(ev),
+                data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+                class: "btn-primary",
+                style: "margin-left:6px;padding:4px 8px;font-size:12px;" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>この日の予定はありません。</p>
+  <% end %>
+
   <!-- タイムライン見出し -->
   <div class="timeline-head">
     <div></div>
