@@ -65,6 +65,13 @@ https://schedule-tracker-q0qh.onrender.com
 
 ## 🖼 実装した機能の画面・GIFなど  
 （※後で画像やGIFを貼り付け）  
+[![Image from Gyazo](https://i.gyazo.com/36aed8228a0c6f36d31af9aacf046397.gif)](https://gyazo.com/36aed8228a0c6f36d31af9aacf046397)
+
+[![Image from Gyazo](https://i.gyazo.com/fa1b33331165795f73f087d54be0dd49.gif)](https://gyazo.com/fa1b33331165795f73f087d54be0dd49)
+
+[![Image from Gyazo](https://i.gyazo.com/a7a2c3e4cdc3aa13e9088a8f4908938d.gif)](https://gyazo.com/a7a2c3e4cdc3aa13e9088a8f4908938d)
+
+[![Image from Gyazo](https://i.gyazo.com/6ad3efe9c5c1ff9b4c8b8f890a0c5ca8.gif)](https://gyazo.com/6ad3efe9c5c1ff9b4c8b8f890a0c5ca8)
 
 ---
 
