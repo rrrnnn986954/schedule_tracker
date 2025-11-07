@@ -76,8 +76,6 @@ https://schedule-tracker-q0qh.onrender.com
 ---
 
 ## 🔧 実装予定の機能  
-- 予定の編集  
-- 実績の編集・削除  
 - カレンダーに「今日」を表示 
 - サーバーをAWSに変更
 
