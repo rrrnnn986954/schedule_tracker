@@ -14,8 +14,7 @@
     <%= f.label :color, "色（7色）" %><br>
     <%= f.select :color, Category.colors.keys.map { |k| [k, k] }, {}, required: true %>
     <span style="display:inline-block;width:14px;height:14px;border-radius:50%;
-                 vertical-align:middle;margin-left:8px;
-                 background:<%= color_hex(@category.color || :blue) %>;"></span>
+                 vertical-align:middle;margin-left:8px;"></span>
   </div>
 
   <%= f.submit class: "btn-primary", value: @category.new_record? ? "作成" : "更新" %>
