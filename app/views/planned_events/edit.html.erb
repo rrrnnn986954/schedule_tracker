@@ -1,0 +1,30 @@
+<!-- app/views/planned_events/edit.html.erb -->
+<h2>予定を編集</h2>
+
+<%= form_with model: @planned_event, url: planned_event_path(@planned_event), method: :patch, local: true do %>
+  <div style="margin-bottom:8px;">
+    <label>開始</label>
+    <%= select_tag :start_at,
+      options_for_select(time_options_10min_with_24, @planned_event.start_at.strftime("%H:%M")),
+      include_blank: false %>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <label>終了</label>
+    <%= select_tag :end_at,
+      options_for_select(time_options_10min_with_24, @planned_event.end_at.strftime("%H:%M")),
+      include_blank: false %>
+  </div>
+
+  <div style="margin-bottom:8px;">
+    <label>カテゴリー</label>
+    <%= select_tag :category_id,
+      options_from_collection_for_select(@categories, :id, :name, @planned_event.category_id),
+      include_blank: false %>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;">
+    <%= submit_tag "更新する", class: "btn-primary" %>
+    <%= link_to "戻る", day_calendar_index_path(date: @date), class: "btn-primary" %>
+  </div>
+<% end %>
