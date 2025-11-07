@@ -1,5 +1,6 @@
 class PlannedEventsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_planned_event, only: [:edit, :update, :destroy]
 
   def create
     # 受け取り
@@ -65,7 +66,7 @@ class PlannedEventsController < ApplicationController
   def destroy
     date = @planned_event.start_at.to_date
     @planned_event.destroy
-    redirect_to day_calendar_index_path(date: date), notice: "予定を削除しました"
+    redirect_to day_calendar_path(date: date), notice: "予定を削除しました"
   end
 
   private
@@ -74,8 +75,7 @@ class PlannedEventsController < ApplicationController
     @planned_event = current_user.planned_events.find(params[:id])
   end
 
-  # "HH:MM" を当日Dateに乗せて Time を返す
-  # allow_24: true かつ "24:00" のときは翌日00:00にする
+  # "HH:MM" を当日 date の時刻にし、allow_24 時のみ "24:00" → 翌日00:00
   def parse_time_on(date, hm, allow_24: false)
     return nil if hm.blank?
     h, m = hm.split(":").map!(&:to_i)
