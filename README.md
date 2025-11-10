@@ -18,6 +18,12 @@ https://schedule-tracker-q0qh.onrender.com
 
 ---
 
+## テストアカウント
+Email
+test@test.com
+
+password
+111111
 
 ## 💡 利用方法  
 
