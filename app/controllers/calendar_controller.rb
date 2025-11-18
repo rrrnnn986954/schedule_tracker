@@ -47,6 +47,7 @@ class CalendarController < ApplicationController
 
   private
 
+  #カテゴリごとの合計時間算出
   def minutes_by_category(records, tracked: false, clip: nil)
     h = Hash.new(0)
     records.each do |r|
