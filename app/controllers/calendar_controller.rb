@@ -36,7 +36,7 @@ class CalendarController < ApplicationController
       { start: s, end: e, category: t.category }
     }
 
-    # 現在時刻ライン（任意でビューに表示）
+    # 現在時刻ライン（今後実装予定）
     now = Time.zone.now
     @now_in_minutes = if now.to_date == @date
                          (((now - range.begin) / 60).clamp(0, 24*60)).to_i
