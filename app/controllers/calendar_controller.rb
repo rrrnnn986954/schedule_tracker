@@ -8,6 +8,7 @@ class CalendarController < ApplicationController
     @date  = params[:date] ? Date.parse(params[:date]) : Date.current
     range  = @date.beginning_of_day..@date.end_of_day
 
+    # グラフ用データ
     # 計画（＝その日中に開始するもの）
     @planned = current_user.planned_events
                            .includes(:category)
@@ -24,6 +25,7 @@ class CalendarController < ApplicationController
     @planned_chart = minutes_by_category(@planned)
     @tracked_chart = minutes_by_category(@tracked, tracked: true, clip: range)
 
+    # 帯グラフ用データ
     # ===== 帯表示用：当日範囲にクリップしたデータ =====
     @timeline_planned = @planned.map { |p|
       { start: p.start_at, end: p.end_at, category: p.category }
