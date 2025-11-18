@@ -1,5 +1,4 @@
 class PlannedEventsController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_planned_event, only: [:edit, :update, :destroy]
 
   def create

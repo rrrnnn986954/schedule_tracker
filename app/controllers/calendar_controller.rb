@@ -1,5 +1,4 @@
 class CalendarController < ApplicationController
-  before_action :authenticate_user!
 
   def index
     @date = (params[:month] ? Date.parse(params[:month]) : Date.current).beginning_of_month

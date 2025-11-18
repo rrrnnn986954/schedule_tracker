@@ -1,6 +1,4 @@
 class TrackedSessionsController < ApplicationController
-  before_action :authenticate_user!
-
   # 計測画面（開始/終了ボタン）
   def new
     @started_at = session[:tracking_started_at] && Time.zone.parse(session[:tracking_started_at].to_s)
