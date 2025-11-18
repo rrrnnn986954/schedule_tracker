@@ -7,11 +7,11 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    # 詳細を使わないなら空でOK（パンくず用など）
+
   end
 
   def new
-    @category = current_user.categories.new(color: :blue) # 初期値はお好みで
+    @category = current_user.categories.new(color: :blue)
   end
 
   def create
